@@ -12,7 +12,7 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('home');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -24,4 +24,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::middleware(['auth', 'can:is-moderator'])->group(function () {
+    Route::get('/dashboard/moderator', function () {
+        return Inertia::render('Moderator/Dashboard');
+    })->name('moderator.dashboard');
+});
+
+
+require __DIR__ . '/auth.php';

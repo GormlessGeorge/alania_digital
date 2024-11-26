@@ -7,6 +7,10 @@ import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 
+defineProps<{
+    is_moderator: boolean
+}>();
+
 const showingNavigationDropdown = ref(false);
 </script>
 
@@ -22,7 +26,7 @@ const showingNavigationDropdown = ref(false);
                         <div class="flex">
                             <!-- Logo -->
                             <div class="flex shrink-0 items-center">
-                                <Link :href="route('dashboard')">
+                                <Link :href="route('home')">
                                     <ApplicationLogo
                                         class="block h-9 w-auto fill-current text-gray-800"
                                     />
@@ -37,7 +41,14 @@ const showingNavigationDropdown = ref(false);
                                     :href="route('dashboard')"
                                     :active="route().current('dashboard')"
                                 >
-                                    Dashboard
+                                    Панель управления
+                                </NavLink>
+                                <NavLink
+                                    v-if="$page.props.auth.user.is_moderator"
+                                    :href="route('moderator.dashboard')"
+                                    :active="route().current('moderator.dashboard')"
+                                >
+                                    Модерация
                                 </NavLink>
                             </div>
                         </div>
